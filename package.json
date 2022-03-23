@@ -1,0 +1,27 @@
+{
+  "name": "puzzle-shop",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server/server.js",
+    "server": "nodemon server/server.js",
+    "import-products": "node server/data/products.js",
+    "client": "npm run serve --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "firebase": "^9.5.0"
+  },
+  "devDependencies": {
+    "concurrently": "^6.4.0",
+    "g-sheets-api": "^2.1.2",
+    "nodemon": "^2.0.15"
+  }
+}
