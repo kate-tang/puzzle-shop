@@ -11,7 +11,7 @@ export function initPage(){
 //       get product >> '/:id'
 // qty: use for cart page; if query.qty > 0 then backend will include qty in returned json obj
 export function getProduct(path, qty = 0){
-  return fetch(`http://127.0.0.1:3000/api/products/${path}?qty=${qty}`)
+  return fetch(`${process.env.VUE_APP_SERVER}/api/products/${path}?qty=${qty}`)
     .then(res => {
       if (res.ok) return res.json();
       throw new Error('抓不到資料，請再重新整理一次');

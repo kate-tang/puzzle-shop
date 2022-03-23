@@ -277,7 +277,7 @@ export default {
         },
         message: order_message.value
       }
-      fetch('http://127.0.0.1:3000/api/order', {
+      fetch(`${process.env.VUE_APP_SERVER}/api/order`, {
         method: 'post',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(data)
@@ -303,7 +303,7 @@ export default {
         return
       }
 
-      fetch(`http://127.0.0.1:3000/api/order/pay/${orderId}`, {
+      fetch(`${process.env.VUE_APP_SERVER}/api/order/pay/${orderId}`, {
         method: 'post',
       })
       .then(res => {
