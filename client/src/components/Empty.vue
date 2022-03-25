@@ -32,15 +32,15 @@ export default {
 .empty {
   display: flex;
   max-width: 800px;
-  margin: 50px auto 100px auto;
+  margin: 0 auto;
+  padding: 50px 0 100px 0;
   @media (max-width: 800px) {
     flex-direction: column;
     align-items: stretch;
     max-width: 400px;
-    margin: 30px auto 80px auto;
   }
   @media (max-width: 500px) {
-    margin: 20px auto 50px auto;
+    padding: 50px 0;
   }
   .image {
     flex: 0 0 50%;
@@ -59,13 +59,18 @@ export default {
     align-items: flex-start;
     padding-left: 20px;
     .text {
-      line-height: 1.5;
+      font-size: 16px;
+      line-height: 1.3;
+      & + .text {
+        margin-top: 5px;
+      }
     }
     .btn {
       margin-top: 10px;
       padding: 10px 15px;
       border: 1px solid $dark-grey;
       border-radius: $border-radius;
+      font-size: 16px;
       transition: all .5s;
       &:hover {
         background: $dark-grey;
@@ -77,6 +82,12 @@ export default {
       flex: 0 0 auto;
       align-items: center;
       margin-top: 20px;
+      padding-left: 0;
+    }
+    @media (max-width: 768px) {
+      .text, .btn {
+        font-size: 14px;
+      }
     }
   }
 }

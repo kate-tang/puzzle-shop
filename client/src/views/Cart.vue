@@ -8,7 +8,7 @@
         <div v-else class="cart-wrap">
           <div class="process">
             <ol class="steps">
-              <li class="step done">購物車</li>
+              <li class="step done"><h1>購物車</h1></li>
               <li class="step" :class="{ 'done': checkoutStep >= 2 }">填寫資料</li>
               <li class="step" :class="{ 'done': checkoutStep >= 3 }">確認付款</li>
               <li class="step" :class="{ 'done': checkoutStep >= 4 }">完成購物</li>
@@ -224,6 +224,7 @@ export default {
 
     let shippingZone = ref('taiwan')
 
+    // get cart items
     const getCart = () => {
       cartItemList.value = JSON.parse(localStorage.getItem('cart-puz')) || []
       if (cartItemList.value.length === 0){
@@ -246,6 +247,7 @@ export default {
     }
     getCart()
 
+    // handle order data & cart's next step
     let order_name = ref()
     let order_email = ref()
     let order_tel = ref()
@@ -430,11 +432,12 @@ export default {
     }
 
     return {
-      cartItemDetails, isLoading, checkoutStep, goNext, shippingZone,
+      cartItemDetails, isLoading, checkoutStep, shippingZone,
       subTotal, total, shippingFee, deductArr, getPrice,
       addCart, removeCart, clearCart, reviseInput, reviseCart,
       order_name, order_email, order_tel, order_address, order_payment, order_message, order_payment_zh,
-      submitOrder, payForOrder, validateName, validateEmail, validateTel, validateAddress, validatePayment
+      goNext, submitOrder, payForOrder,
+      validateName, validateEmail, validateTel, validateAddress, validatePayment
     }
   },
 }
@@ -442,18 +445,21 @@ export default {
 
 <style lang="scss" scoped>
 .container {
-  position: relative;
-  min-height: 50vh;
+  position: relative;   /* for Loading component */
+  min-height: 500px;
+}
+.process {
+  padding: 30px 0 50px 0;
+  @media (max-width: 400px) {
+    padding: 30px 0 40px 0;
+  }
 }
 .steps {
   display: flex;
   justify-content: space-between;
   max-width: 800px;
-  margin: 30px auto 50px auto;
+  margin: 0 auto 0 auto;
   counter-reset: step;
-  @media (max-width: 400px) {
-    margin: 30px auto 40px auto;
-  }
   .step {
     position: relative;
     flex: 25%;
@@ -557,6 +563,9 @@ export default {
 
 .cart-wrap {
   padding-bottom: 100px;
+  @media (max-width: 500px) {
+    padding-bottom: 70px;
+  }
 }
 .checkout {
   margin: 0 auto;
@@ -707,6 +716,7 @@ export default {
     .change-qty-input {
       width: 40px;
       height: 26px;
+      font-size: 16px;
     }
   }
   @media (max-width: 400px) {
@@ -764,7 +774,14 @@ export default {
     margin-left: auto;
   }
   @media (max-width: 768px) {
+    max-width: 50%;
     font-size: 14px;
+  }
+  @media (max-width: 600px) {
+    max-width: 60%;
+  }
+  @media (max-width: 500px) {
+    max-width: 100%;
   }
 }
 
@@ -799,7 +816,8 @@ export default {
     border: 1px solid #BBB;
     border-radius: $border-radius;
   }
-  select {
+  select, option {
+    background-color: #FFF;
   }
   textarea {
     height: 80px;

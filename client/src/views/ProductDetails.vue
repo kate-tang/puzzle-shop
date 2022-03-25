@@ -33,7 +33,7 @@
             <div class="action">
               <button type="button" class="action-btn checkout-btn" v-if="product.countInStock > 0" @click="addCart">
                 加入購物車
-                <img src="../assets/image/load-white.gif" alt="" class="load" v-if="isAddingToCart">
+                <img src="../assets/image/load-white.gif" alt="..." class="load" v-if="isAddingToCart">
               </button>
               <button type="button" class="action-btn pre-order-btn" v-else @click="showArrivalNotice = true">可訂購時通知我</button>
               <button type="button" class="wishlist-btn" @click="updateFav(id)">
@@ -57,15 +57,15 @@
         </div>
         <div class="product-details">
           <div class="description">
-            <h2 class="main-title small">
+            <div class="main-title small">
               <div class="en">details</div>
-              <div class="zh">商品描述</div>
-            </h2>
+              <h2 class="zh">商品描述</h2>
+            </div>
             <!-- description for 3D puzzle -->
             <div class="description-content" v-if="product['category-en'] === '3d-puzzle'">
               <div class="set">
-                <img src="../assets/image/product-details-04.jpeg" alt="拚膩了平面拼圖嗎？來款燒腦的3D立體模型。">
-                <p class="set-text">拚膩了平面拼圖嗎？來款燒腦的3D立體模型吧。</p>
+                <img src="../assets/image/product-details-04.jpeg" alt="拚膩了平面拼圖嗎？來款燒腦的 3D 立體模型。">
+                <p class="set-text">拚膩了平面拼圖嗎？來款燒腦的 3D 立體模型吧。</p>
               </div>
               <div class="set">
                 <img src="../assets/image/product-details-05.jpeg" alt="忠實重現每一處細節，讓您遊玩時彷彿身入其境。">
@@ -96,10 +96,10 @@
             </div>
           </div>
           <div class="spec">
-            <h2 class="main-title small">
+            <div class="main-title small">
               <div class="en">spec</div>
-              <div class="zh">商品規格</div>
-            </h2>
+              <h2 class="zh">商品規格</h2>
+            </div>
             <table class="spec-table">
               <tr class="row">
                 <th class="title">品名</th>
@@ -180,10 +180,10 @@
             </table>
           </div>
           <div class="notice">
-            <h2 class="main-title small">
+            <div class="main-title small">
               <div class="en">notice</div>
-              <div class="zh">商品須知</div>
-            </h2>
+              <h2 class="zh">商品須知</h2>
+            </div>
             <p class="notice-item">商品尺寸及顏色可能會與圖片有微小差異，請以實際商品為主。</p>
             <p class="notice-item">本商品內含小物件，不適合三歲以下兒童使用且應避免幼兒吞食窒息。</p>
             <p class="notice-item">為了保護消費者權益，依消保法規定，商品皆享有七天猶豫期的權益。退換貨商品須為未經拆封使用，或非人為瑕疵所造成的污損、故障，並保留完整的原始包裝（含外包裝紙盒），否則恕不接受退貨。</p>
@@ -191,10 +191,10 @@
             <p class="notice-item">平面拼圖類商品皆提供代拼服務，如有需要請於訂購時備註告訴我們。</p>
           </div>
           <div class="recommend">
-            <h2 class="main-title small">
+            <div class="main-title small">
               <div class="en">more</div>
-              <div class="zh">與此商品相似</div>
-            </h2>
+              <h2 class="zh">與此商品相似</h2>
+            </div>
             <p v-if="!recommendedProducts">商品載入中，請稍候...</p>
             <ul class="recommend-list" v-else>
               <li class="recommend-item" v-for="item in recommendedProducts" :style="{ order: Math.floor(Math.random() * 100) }">
@@ -506,7 +506,7 @@ export default {
   }
   .wishlist-btn {
     display: block;
-    margin: 0 auto;
+    width: 100%;
     padding: 10px;
     background: #FFF;
     border: none;

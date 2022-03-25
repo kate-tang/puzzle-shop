@@ -11,10 +11,14 @@
           </button>
           <ul class="categories-menu" :class="{ 'show': showMenu }">
             <li class="categories-menu-item">
-              <router-link :to="{ path: '/products', hash: '#main' }" class="categories-menu-item-link" @click="showMenu = false" tabindex="0" data-menulink="true">所有商品</router-link>
+              <router-link :to="{ path: '/products', hash: '#main' }" class="categories-menu-item-link" @click="showMenu = false" tabindex="0" data-menulink="true">
+                <h2>所有商品</h2>
+              </router-link>
             </li>
             <li class="categories-menu-item" v-for="category in $store.state.categories">
-              <router-link :to="{ path: `/categories/${category['category-en']}`, hash: '#main' }" class="categories-menu-item-link" @click="showMenu = false" tabindex="0" data-menulink="true">{{ category['category-zh'] }}</router-link>
+              <router-link :to="{ path: `/categories/${category['category-en']}`, hash: '#main' }" class="categories-menu-item-link" @click="showMenu = false" tabindex="0" data-menulink="true">
+                <h2>{{ category['category-zh'] }}</h2>
+              </router-link>
             </li>
           </ul>
         </nav>
@@ -35,7 +39,7 @@
                         <ion-icon name="heart-outline" class="icon" v-else></ion-icon>
                       </button>
                       <button type="button" class="btn" @click.prevent="addCart(item.id, item.countInStock)" :class="{ 'disabled': item.countInStock === 0 }">
-                        <img src="../assets/image/load.gif" alt="" class="load" v-if="isAddingToCart && addToCartId === item.id">
+                        <img src="../assets/image/load.gif" alt="..." class="load" v-if="isAddingToCart && addToCartId === item.id">
                         <ion-icon name="cart-outline" class="icon" v-else></ion-icon>
                       </button>
                     </div>
@@ -68,6 +72,7 @@ export default {
   setup(){
     onMounted(() => initPage())
 
+    // switch mobile category list
     const showMenu = ref(false)
     function closeMenu(e){
       if (e.relatedTarget && e.relatedTarget.dataset && e.relatedTarget.dataset.menulink) return
@@ -82,7 +87,7 @@ export default {
     let isLoading = ref(true)
 
     // pagination
-    const items = 6
+    const items = 12
     const page = ref(Number(route.query.page) || 1)
     let totalPage = ref(null);
     function paginatedItems(list, itemsPerPage, currentPage){
@@ -156,9 +161,10 @@ export default {
     }
 
     return {
-      showMenu, closeMenu, updateFav, isLoading,
+      showMenu, closeMenu, isLoading, path,
+      updateFav,
       isAddingToCart, addToCartId, addCart,
-      page, totalPage, paginatedProducts, path
+      page, totalPage, paginatedProducts
     }
   }
 }
@@ -263,7 +269,7 @@ export default {
 }
 .product-list-wrap {
   flex: 1;
-  position: relative;
+  position: relative;   /* for Loading component */
   min-height: 20vh;
 }
 .product-list {
@@ -307,6 +313,7 @@ export default {
   width: 100%;
 }
 .product-details {
+  flex: 1;
   display: flex;
   flex-direction: column;
   padding: 20px 15px;

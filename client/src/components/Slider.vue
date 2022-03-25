@@ -1,16 +1,16 @@
 <template>
-  <div class="slider">
+  <section class="slider">
     <div class="container">
-      <div class="text-slider-box">
-        <router-link to="/products" class="text-slider-item" :class="{ 'active': slideNo === n }" v-for="n in slidesData.length - 2" title="前往選購" :data-num="n">
-          <p class="title-zero" v-if="slidesData[n].titleZero">{{ slidesData[n].titleZero }}</p>
-          <p class="title-one" v-if="slidesData[n].titleOne">{{ slidesData[n].titleOne }}</p>
-          <p class="title-two" v-if="slidesData[n].titleTwo">{{ slidesData[n].titleTwo }}</p>
+      <h2 class="text-slider-box">
+        <router-link to="/products" class="text-slider-item" :class="{ 'active': slideNo === n }" v-for="n in $store.state.homeSlidesData.length - 2" title="前往選購" :data-num="n">
+          <span class="title-zero" v-if="$store.state.homeSlidesData[n].titleZero">{{ $store.state.homeSlidesData[n].titleZero }}</span>
+          <span class="title-one" v-if="$store.state.homeSlidesData[n].titleOne">{{ $store.state.homeSlidesData[n].titleOne }}</span>
+          <span class="title-two" v-if="$store.state.homeSlidesData[n].titleTwo">{{ $store.state.homeSlidesData[n].titleTwo }}</span>
         </router-link>
-      </div>
+      </h2>
       <div class="image-slider-box">
         <div class="image-slider-slides">
-          <router-link :to="slide.slideRoute" class="image-slider-item" v-for="slide in slidesData" :style="[ slide.hasMultipleBackground ? { background: '#EEE'} : { backgroundImage: 'url(' + require('../assets/image/' + slide.background) + ')' } ]" title="前往選購">
+          <router-link :to="slide.slideRoute" class="image-slider-item" v-for="slide in $store.state.homeSlidesData" :style="[ slide.hasMultipleBackground ? { background: '#EEE'} : { backgroundImage: 'url(' + require('../assets/image/' + slide.background) + ')' } ]" title="前往選購">
             <ul class="image-slider-item-extract" v-if="slide.hasMultipleBackground">
               <li class="image-slider-item-extract-image" v-for="image in slide.background" :style="{ backgroundImage: 'url(' + require('../assets/image/' + image) + ')' }"></li>
             </ul>
@@ -20,14 +20,14 @@
           <span class="image-slider-pagination-prev">
             <ion-icon name="chevron-back-outline"></ion-icon>
           </span>
-          <span class="image-slider-pagination-item" v-for="(item, index) in (slidesData.length - 2)" :data-id="index + 1" :class="{ 'active': slideNo === item }"></span>
+          <span class="image-slider-pagination-item" v-for="(item, index) in ($store.state.homeSlidesData.length - 2)" :data-id="index + 1" :class="{ 'active': slideNo === item }"></span>
           <span class="image-slider-pagination-next">
             <ion-icon name="chevron-forward-outline"></ion-icon>
           </span>
         </nav>
       </div>
     </div>
-  </div>
+  </section>
 </template>
 
 <script>
@@ -35,64 +35,8 @@ import { onMounted, ref } from 'vue'
 
 export default {
   setup() {
-    const slidesData = ref([
-      {
-        slideId: 4,
-        slideRoute: '/products',
-        hasMultipleBackground: false,
-        background: 'slider-04.jpeg',
-        titleZero: '最佳禮物提案',
-        titleOne: '還在煩惱送禮該選什麼嗎？',
-        titleTwo: '來 Puzzle Shop 就對了'
-      },
-      {
-        slideId: 1,
-        slideRoute: '/categories/world-masterpieces',
-        hasMultipleBackground: true,
-        background: ['slider-01-1.jpg','slider-01-2.jpg','slider-01-3.jpg','slider-01-4.jpg','slider-01-5.jpg'],
-        titleZero: '本月主題',
-        titleOne: '世界名畫巡禮',
-        titleTwo: '拼出藝術家畫筆下的精采與靈動'
-      },
-      {
-        slideId: 2,
-        slideRoute: '/products/-My7c7Q34oSjRxHQLBm7',
-        hasMultipleBackground: false,
-        background: 'slider-02.jpg',
-        titleZero: 'Monet',
-        titleOne: '這個周末',
-        titleTwo: '我想來點莫內的印象日出'
-      },
-      {
-        slideId: 3,
-        slideRoute: '/products',
-        hasMultipleBackground: false,
-        background: 'slider-03.jpeg',
-        titleZero: '',
-        titleOne: '歡慶佳節',
-        titleTwo: '全館單筆消費滿千享免運優惠'
-      },
-      {
-        slideId: 4,
-        slideRoute: '/products',
-        hasMultipleBackground: false,
-        background: 'slider-04.jpeg',
-        titleZero: '最佳禮物提案',
-        titleOne: '還在煩惱送禮該選什麼嗎？',
-        titleTwo: '來 Puzzle Shop 就對了'
-      },
-      {
-        slideId: 1,
-        slideRoute: '/categories/world-masterpieces',
-        hasMultipleBackground: true,
-        background: ['slider-01-1.jpg','slider-01-2.jpg','slider-01-3.jpg','slider-01-4.jpg','slider-01-5.jpg'],
-        titleZero: '本月主題',
-        titleOne: '世界名畫巡禮',
-        titleTwo: '拼出藝術家畫筆下的精采與靈動'
-      }
-    ])
-    
     let slideNo = ref(1);
+    const interval = 3000
     onMounted(() => {
       const box = document.querySelector('.image-slider-box');
       const image = document.querySelector('.image-slider-slides');
@@ -113,15 +57,17 @@ export default {
         image.style.transform = `translateX(${size * -slideNo.value}px)`;
       });
 
-      let pause = setInterval(moveToNext, 3000);
-      let sliderSwitch = document.querySelectorAll('.image-slider-pagination span')
-      sliderSwitch.forEach(item => {
+      // set slider autoplay
+      let autoplay = setInterval(moveToNext, interval);
+      let sliderSwitches = document.querySelectorAll('.image-slider-pagination span')
+      sliderSwitches.forEach(item => {
         item.addEventListener('click', () => {
-          clearInterval(pause)
-          pause = setInterval(moveToNext, 3000);
+          clearInterval(autoplay)
+          autoplay = setInterval(moveToNext, interval);
         })
       })
 
+      // slider logic
       let initialX = null;
       let distence = 0;
       let size = slides[0].offsetWidth;
@@ -133,6 +79,7 @@ export default {
       function startTouch(e){
         if (isSliding) return
         initialX = e.touches[0].clientX;
+        clearInterval(autoplay)
       }
       function moveTouch(e){
         if (isSliding) return
@@ -148,14 +95,16 @@ export default {
         }
       }
       function endTouch(e){
-        const moveMoreThanHalf = Math.abs(distence) > (size / 2);
-        if (distence > 0 && moveMoreThanHalf && slideNo.value !== 0){
+        // const moveMoreThanHalf = Math.abs(distence) > (size / 2);
+        const moveMoreThen30px = Math.abs(distence) > 30;
+        if (distence > 0 && moveMoreThen30px && slideNo.value !== 0){
           moveToPrev();
-        } else if (distence < 0 && moveMoreThanHalf && slideNo.value !== slides.length-1){
+        } else if (distence < 0 && moveMoreThen30px && slideNo.value !== slides.length-1){
           moveToNext();
         } else {
           image.style.transform = `translateX(${size * -slideNo.value}px)`;
         }
+        autoplay = setInterval(moveToNext, interval);
       }
       function moveToPrev(){
         isSliding = true;
@@ -197,7 +146,7 @@ export default {
       }
     })
 
-    return { slidesData, slideNo }
+    return { slideNo }
   }
 }
 </script>

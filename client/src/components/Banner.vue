@@ -1,9 +1,9 @@
 <template>
   <div class="banner" :style="{ backgroundImage: 'url(' + require('../assets/image/' + $store.state.bannerData[path]['bg']) + ')' }">
     <div class="container">
-      <div class="banner-content">
-        <p class="banner-text" v-for="item in $store.state.bannerData[path]['text']">{{ item }}</p>
-      </div>
+      <h1 class="banner-content">
+        <span class="banner-text" v-for="item in $store.state.bannerData[path]['text']">{{ item }}</span>
+      </h1>
     </div>
   </div>
 </template>
@@ -66,6 +66,7 @@ export default {
   }
 }
 .banner-text {
+  display: block;
   font-family: 'Carter One', "Noto Sans TC", sans-serif;
   & + & {
     margin-top: 10px;

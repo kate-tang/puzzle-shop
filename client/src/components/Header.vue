@@ -96,7 +96,7 @@ export default {
       }
     }
 
-    // close sidemenu when 1. click outside of it or 2. click on menu item
+    // close mobile sidemenu when 1. click outside of it or 2. click on menu item
     document.addEventListener('click', e => {
       const sideMenu = document.querySelector('.menu-wrap')
       const toggle = document.querySelector('.toggle')
@@ -106,7 +106,10 @@ export default {
       }
     })
 
-    return { header, submenu, toggleMenu, toggleSidemenu, submenuToggleIcon, showSubmenu, hideSubmenu, mobileToggleSidemenu }
+    return {
+      header, submenu, toggleMenu, toggleSidemenu, submenuToggleIcon,
+      showSubmenu, hideSubmenu, mobileToggleSidemenu
+    }
   }
 }
 </script>

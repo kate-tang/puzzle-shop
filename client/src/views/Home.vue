@@ -8,7 +8,7 @@
           <h2 class="zh">熱門系列</h2>
         </div>
         <ul class="series-wrap">
-          <li v-for="series in seriesData">
+          <li v-for="series in $store.state.homeSeriesData">
             <router-link :to="series.route" class="series-item">
               <div class="series-item-intro">
                 <h4 class="series-item-subtitle">{{ series.subtitle }}</h4>
@@ -26,10 +26,10 @@
       </div>
     </section>
     <section class="slogan">
-      <div class="slogan-box" ref="slogan">
-        <p class="slogan-text">一杯咖啡，一幅拼圖</p>
-        <p class="slogan-text">陪你度過一個優閒的下午</p>
-      </div>
+      <h1 class="slogan-box" ref="slogan">
+        <span class="slogan-text">一杯咖啡，一幅拼圖</span>
+        <span class="slogan-text">陪你度過一個優閒的下午</span>
+      </h1>
     </section>
     <section class="wall">
       <div class="container">
@@ -37,21 +37,21 @@
           <div class="en">Selection</div>
           <h2 class="zh">多款拼圖，任君挑選</h2>
         </div>
-        <div class="wall-desktop" ref="wallDesktop">
+        <div class="wall-desktop" ref="wallDesktop" v-if="isDesktopMode">
           <div class="wall-d-wrap">
-            <div class="wall-d-col" v-for="(col, index) in wallDesktopData" 
+            <div class="wall-d-col" v-for="(col, index) in $store.state.homeWallDesktopData" 
             :style="[ (index+1) % 2 === 0 ? { '--seq': col.sequence, '--offset': `${wallOffset}%` } : { '--seq': col.sequence, '--offset': '0%' } ]"
             >
               <router-link :to="image.route" class="wall-d-col-item" v-for="image in col.images" :style="[ image.direction === 'v' ? { paddingBottom: '140%', backgroundImage: 'url(' + require('../assets/image/products/' + image.fileName) + ')' } : { paddingBottom: '84%', backgroundImage: 'url(' + require('../assets/image/products/' + image.fileName) + ')' } ]"></router-link>
             </div>
           </div>
         </div>
-        <div class="wall-mobile" ref="wallMobile">
+        <div class="wall-mobile" ref="wallMobile" v-else>
           <div class="wall-m-wrap">
             <div class="wall-m-bg">
               <div class="wall-m-frame">
                 <div class="wall-m-puzzles">
-                  <div class="wall-m-puzzle-item" v-for="image in wallMobileData" :style="{ backgroundImage: 'url(' + require('../assets/image/products/' + image.fileName) + ')' }"></div>
+                  <div class="wall-m-puzzle-item" v-for="image in $store.state.homeWallMobileData" :style="{ backgroundImage: 'url(' + require('../assets/image/products/' + image.fileName) + ')' }"></div>
                 </div>
               </div>
             </div>
@@ -61,10 +61,10 @@
     </section>
     <section class="service">
       <div class="container">
-        <h2 class="main-title">
+        <div class="main-title">
           <div class="en">Service</div>
           <h2 class="zh">專屬服務</h2>
-        </h2>
+        </div>
         <ul class="service-list">
           <li>
             <router-link :to="{ path: '/faq', hash: '#q2' }" class="service-item">
@@ -138,127 +138,26 @@ export default {
   setup(){
     onMounted(() => initPage())
     
-    const seriesData = ref([
-      {
-        seriesId: 1,
-        route: '/categories/landscape#main',
-        title: '風景',
-        subtitle: '收藏心中最美的風景',
-        images: ['c001.jpeg', 'c004.jpeg', 'c006.jpeg']
-      },
-      {
-        seriesId: 2,
-        route: '/categories/world-masterpieces#main',
-        title: '世界名畫',
-        subtitle: '大師經典',
-        images: ['a001.jpg', 'a003.jpeg', 'a004.jpg']
-      },
-      {
-        seriesId: 3,
-        route: '/categories/wild-animals#main',
-        title: '動物',
-        subtitle: '我家有個動物園',
-        images: ['f002.jpeg', 'f001.jpeg', 'f007.jpeg']
-      },
-      {
-        seriesId: 4,
-        route: '/categories/city-and-architecture#main',
-        title: '城市建築',
-        subtitle: '萬丈高樓拼起來',
-        images: ['e004.jpeg', 'e005.jpeg', 'e006.jpeg']
-      }
-    ])
-
-    const wallDesktopData = ref([
-      {
-        id: 1,
-        sequence: 2,
-        images: [
-          { fileName: 'c012.jpeg', direction: 'v', route: '/products/-My7c8hoUanJN25SHHUF' },
-          { fileName: 'f006.jpeg', direction: 'v', route: '/products/-My7c9g6x22OufnE2-TX' },
-          { fileName: 'b001.jpg', direction: 'h', route: '/products/-My7c80ojJcD82w0QnPF' },
-          { fileName: 'a007.jpg', direction: 'v', route: '/products/-My7c7Sd8t_eIXEgv8D_' }
-        ]
-      },
-      {
-        id: 2,
-        sequence: 6,
-        images: [
-          { fileName: 'e012.jpeg', direction: 'v', route: '/products/-My7c9Oxjv5BylvOvZPg' },
-          { fileName: 'd001.jpeg', direction: 'v', route: '/products/-My7c8sB8ygAxbbmsznJ' },
-          { fileName: 'f008.jpeg', direction: 'v', route: '/products/-My7c9lJbwYNl8MVoF-G' },
-          { fileName: 'c005.jpeg', direction: 'h', route: '/products/-My7c8Qh7Qnf7EMxn12i' }
-        ]
-      },
-      {
-        id: 3,
-        sequence: 3,
-        images: [
-          { fileName: 'f003.jpeg', direction: 'h', route: '/products/-My7c9ZOydAt679zYbG3' },
-          { fileName: 'c015.jpeg', direction: 'v', route: '/products/-My7c8p_VegH3lGO_W8k' },
-          { fileName: 'g002.jpeg', direction: 'v', route: '/products/-My7c9vloQZfAxWiWGcK' },
-          { fileName: 'a017.jpg', direction: 'v', route: '/products/-My7c7rPdeUlAoN7-b5A' }
-        ]
-      },
-      {
-        id: 4,
-        sequence: 5,
-        images: [
-          { fileName: 'c010.jpeg', direction: 'v', route: '/products/-My7c8cdbAaw2rFqydOx' },
-          { fileName: 'a013.jpg', direction: 'v', route: '/products/-My7c7h6cTnYcxUQzFnd' },
-          { fileName: 'h010.jpeg', direction: 'v', route: '/products/-My7cB0B4gwZ6ymLb5m8' },
-          { fileName: 'b003.jpg', direction: 'h', route: '/products/-My7c85yUs1YbH058UV8' }
-        ]
-      },
-      {
-        id: 5,
-        sequence: 2,
-        images: [
-          { fileName: 'a001.jpg', direction: 'h', route: '/products/-My7c7D03Gw-GbU131oR' },
-          { fileName: 'b006.jpg', direction: 'v', route: '/products/-My7c8DjUOgxJ-CYWTpO' },
-          { fileName: 'e002.jpeg', direction: 'v', route: '/products/-My7c8zzsymMgoOzMkMz' },
-          { fileName: 'g001.jpeg', direction: 'v', route: '/products/-My7c9t9kSYepo4uITRi' }
-        ]
-      },
-      {
-        id: 6,
-        sequence: 6,
-        images: [
-          { fileName: 'e008.jpeg', direction: 'v', route: '/products/-My7c9EWCxEbAGD1zb6-' },
-          { fileName: 'a004.jpg', direction: 'h', route: '/products/-My7c7Kq1LJ3ELrCUCaz' },
-          { fileName: 'f009.jpeg', direction: 'v', route: '/products/-My7c9nxnsZAZFSFcFcd' },
-          { fileName: 'c007.jpeg', direction: 'v', route: '/products/-My7c8VrG56ID58O5aIT' }
-        ]
-      },
-      {
-        id: 7,
-        sequence: 1,
-        images: [
-          { fileName: 'c013.jpeg', direction: 'v', route: '/products/-My7c8kPuRPAUSWj-IbV' },
-          { fileName: 'f005.jpeg', direction: 'v', route: '/products/-My7c9dXPAT6nBsVqnbi' },
-          { fileName: 'a005.jpg', direction: 'h', route: '/products/-My7c7NTZOebebout77t' },
-          { fileName: 'c011.jpeg', direction: 'v', route: '/products/-My7c8fDMv-6IHUoEo9W' }
-        ]
-      },
-    ])
-
-    const wallMobileData = ref([
-      { id: 1, fileName: 'b003.jpg' },
-      { id: 2, fileName: 'a020.jpg' },
-      { id: 3, fileName: 'f001.jpeg' },
-      { id: 4, fileName: 'a019.jpg' },
-      { id: 5, fileName: 'e010.jpeg' },
-    ])
-
+    // slide in/out content when scroll
     const slogan = ref(null);
     const wallDesktop = ref(null);
     const wallMobile = ref(null);
     let wallOffset = ref(0);
+    let isDesktopMode = ref(true)
+    function switchWallMode(){
+      let siteWidth = document.body.offsetWidth
+      if (siteWidth <= 850){
+        isDesktopMode.value = false
+      } else {
+        isDesktopMode.value = true
+      }
+    }
     function popUpContent(){
       const scrollPos = window.pageYOffset;
       const topEffectivePoint = window.screen.height * 0.3;
       const bottomEffectivePoint = window.screen.height * 0.8;
 
+      // slogan slide in/out
       const sloganPos = slogan.value.getBoundingClientRect();
       if (sloganPos.top < bottomEffectivePoint) {
         slogan.value.classList.add('active');
@@ -266,33 +165,40 @@ export default {
         slogan.value.classList.remove('active');
       }
 
-      const wallDesktopPos = wallDesktop.value.getBoundingClientRect();
-      const wallMobilePos = wallMobile.value.getBoundingClientRect();
-      const walk = wallDesktopPos.height + (bottomEffectivePoint - topEffectivePoint);
-      const startPos = window.pageYOffset + wallDesktopPos.top - bottomEffectivePoint;
-      const offsetLevel = 30;
-      if (wallDesktopPos.top < bottomEffectivePoint && wallDesktopPos.bottom > topEffectivePoint) {
-        const offsetValue = ((scrollPos - startPos) / walk) * offsetLevel;
-        wallOffset.value = offsetValue;
-      }
-      if (wallDesktopPos.top < bottomEffectivePoint) {
-        wallDesktop.value.classList.add('active');
-      } else {
-        wallDesktop.value.classList.remove('active');
-      }
-      if (wallMobilePos.top < bottomEffectivePoint) {
-        wallMobile.value.classList.add('active');
-      } else {
-        wallMobile.value.classList.remove('active');
-      }
-    }
-    window.addEventListener('scroll', popUpContent)
-    onUnmounted(() => window.removeEventListener('scroll', popUpContent))
+      // wall slide in/out
+      if (isDesktopMode.value){
+        const wallDesktopPos = wallDesktop.value.getBoundingClientRect();
+        const walk = wallDesktopPos.height + (bottomEffectivePoint - topEffectivePoint);
+        const startPos = window.pageYOffset + wallDesktopPos.top - bottomEffectivePoint;
+        const offsetLevel = 30;
 
-    return { 
-      seriesData, wallDesktopData, wallMobileData, 
-      slogan, wallDesktop, wallMobile, wallOffset
+        if (wallDesktopPos.top < bottomEffectivePoint && wallDesktopPos.bottom > topEffectivePoint) {
+          const offsetValue = ((scrollPos - startPos) / walk) * offsetLevel;
+          wallOffset.value = offsetValue;
+        }
+        if (wallDesktopPos.top < bottomEffectivePoint) {
+          wallDesktop.value.classList.add('active');
+        } else {
+          wallDesktop.value.classList.remove('active');
+        }
+      } else {
+        const wallMobilePos = wallMobile.value.getBoundingClientRect();
+
+        if (wallMobilePos.top < bottomEffectivePoint) {
+          wallMobile.value.classList.add('active');
+        } else {
+          wallMobile.value.classList.remove('active');
+        }
+      }
     }
+    window.addEventListener('resize', switchWallMode)
+    window.addEventListener('scroll', popUpContent)
+    onUnmounted(() => {
+      window.removeEventListener('resize', switchWallMode)
+      window.removeEventListener('scroll', popUpContent)
+    })
+
+    return { slogan, wallDesktop, wallMobile, wallOffset, isDesktopMode }
   }
 }
 </script>
@@ -462,6 +368,7 @@ export default {
   }
 }
 .slogan-text {
+  display: block;
   color: rgba(255,255,255,.9);
   font-size: 24px;
   & + & {
@@ -492,9 +399,6 @@ export default {
   &.active {
     transform: translateY(0);
     opacity: 1;
-  }
-  @media (max-width: 850px) {
-    display: none;
   }
 }
 .wall-d-wrap {
@@ -527,19 +431,15 @@ export default {
 }
 .wall-mobile {
   position: relative;
-  display: none;
   max-width: 550px;
   width: 100%;
-  margin: 100px auto 50px auto;
+  margin: 100px auto 150px auto;
   transform: translateY(100px);
   opacity: 0;
   transition: all 1s;
   &.active {
     transform: translateY(0);
     opacity: 1;
-  }
-  @media (max-width: 850px) {
-    display: block;
   }
 }
 .wall-m-wrap {

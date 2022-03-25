@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import { onMounted, ref } from 'vue'
+import { onMounted } from 'vue'
 import { initPage } from '../helpers'
 import Breadcrumb from '../components/Breadcrumb.vue'
 import { useRoute } from 'vue-router'
@@ -127,14 +127,17 @@ export default {
   padding: 20px 15px;
   cursor: pointer;
   .arrow {
+    flex: 0 0 22px;
     margin-right: 10px;
     font-size: 22px;
     transition: all .5s;
   }
   .question {
+    flex: 1;
     display: inline-block;
     font-size: 18px;
     font-weight: 500;
+    line-height: 1.3;
   }
 }
 .accordion-item-body {

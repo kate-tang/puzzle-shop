@@ -6,41 +6,43 @@
       <Loading :active="isLoading" :is-full-page="false" />
       <div v-if="!isLoading">
         <Empty v-if="favProducts.length === 0" />
-        <table v-else class="fav-list">
-          <thead>
-            <tr class="title-row">
-              <th></th>
-              <th>名稱</th>
-              <th>價格</th>
-              <th class="m-hide">加入購物車</th>
-              <th class="m-hide">取消收藏</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr class="item-row" v-for="fav in favProducts" :class="fav" :key="fav.id">
-              <td class="image">
-                <router-link :to="`/products/${fav.id}`" class="image-link">
-                  <ProductImage class="img" :file-name="fav.product.imageFileName" :alt="fav.product.name" />
-                </router-link>
-              </td>
-              <td class="name">
-                <router-link :to="`/products/${fav.id}`">{{ fav.product.name }}</router-link>
-              </td>
-              <td class="price">{{ fav.product.price }}</td>
-              <td class="addcart">
-                <button type="button" class="btn" @click="addFavToCart(fav.id)">
-                  <span class="text m-hide">加入購物車</span>
-                  <ion-icon name="cart-outline" class="icon m-show"></ion-icon>
-                </button>
-              </td>
-              <td class="unfav">
-                <button type="button" class="btn" @click="removeFav(fav.id)">
-                  <ion-icon name="trash-outline" class="icon"></ion-icon>
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <div v-else class="fav-list-wrap">
+          <table class="fav-list">
+            <thead>
+              <tr class="title-row">
+                <th></th>
+                <th>名稱</th>
+                <th>價格</th>
+                <th class="m-hide">加入購物車</th>
+                <th class="m-hide">取消收藏</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="item-row" v-for="fav in favProducts" :class="fav" :key="fav.id">
+                <td class="image">
+                  <router-link :to="`/products/${fav.id}`" class="image-link">
+                    <ProductImage class="img" :file-name="fav.product.imageFileName" :alt="fav.product.name" />
+                  </router-link>
+                </td>
+                <td class="name">
+                  <router-link :to="`/products/${fav.id}`">{{ fav.product.name }}</router-link>
+                </td>
+                <td class="price">{{ fav.product.price }}</td>
+                <td class="addcart">
+                  <button type="button" class="btn" @click="addFavToCart(fav.id)">
+                    <span class="text m-hide">加入購物車</span>
+                    <ion-icon name="cart-outline" class="icon m-show"></ion-icon>
+                  </button>
+                </td>
+                <td class="unfav">
+                  <button type="button" class="btn" @click="removeFav(fav.id)">
+                    <ion-icon name="trash-outline" class="icon"></ion-icon>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </main>
@@ -111,20 +113,38 @@ export default {
 
 <style lang="scss" scoped>
 .container {
-  position: relative;
-  min-height: 50vh;
+  position: relative;   /* for Loading component */
+  min-height: 500px;
+  @media (max-width: 750px) {
+    min-height: 450px;
+  }
+  @media (max-width: 600px) {
+    min-height: 400px;
+  }
+  @media (max-width: 400px) {
+    min-height: 350px;
+  }
+}
+.fav-list-wrap {
+  padding: 50px 0 100px 0;
+  @media (max-width: 850px) {
+    padding: 30px 0 100px 0;
+  }
+  @media (max-width: 500px) {
+    padding: 30px 0 70px 0;
+  }
 }
 .fav-list {
   max-width: 750px;
   width: 100%;
-  margin: 50px auto 200px auto;
+  margin: 0 auto;
   color: $dark-grey;
   font-size: 16px;
   @media (max-width: 600px) {
-    margin: 50px auto 100px auto;
+    // margin: 50px auto 100px auto;
   }
   @media (max-width: 500px) {
-    margin: 30px auto 70px auto;
+    // margin: 30px auto 70px auto;
     font-size: 14px;
   }
 }
